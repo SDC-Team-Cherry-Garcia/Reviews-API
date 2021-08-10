@@ -1,0 +1,29 @@
+{
+  "name": "reviews-api",
+  "version": "1.0.0",
+  "description": "Systems Design Capstone",
+  "main": "index.js",
+  "scripts": {
+    "test": "",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SDC-Team-Cherry-Garcia/Reviews-API.git"
+  },
+  "author": "Erin Grisham",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SDC-Team-Cherry-Garcia/Reviews-API/issues"
+  },
+  "homepage": "https://github.com/SDC-Team-Cherry-Garcia/Reviews-API#readme",
+  "dependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "axios": "^0.21.1",
+    "express": "^4.17.1",
+    "jest": "^27.0.6",
+    "mongoose": "^5.13.5",
+    "mysql": "^2.18.1"
+  }
+}
