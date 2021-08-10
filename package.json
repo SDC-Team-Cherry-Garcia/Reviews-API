@@ -4,7 +4,7 @@
   "description": "Systems Design Capstone",
   "main": "index.js",
   "scripts": {
-    "test": "",
+    "db": "node database/index.js",
     "start": "node index.js"
   },
   "repository": {
