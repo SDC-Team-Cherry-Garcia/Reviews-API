@@ -2,6 +2,8 @@ const db = require('../../database');
 
 const getReviews = callback => {
 
+  //query combines reviews table with photos table join on ????
+
   let params = [];
 
   let queryString = 'SELECT * from reviews';
@@ -11,15 +13,17 @@ const getReviews = callback => {
       console.log('Error getting all reviews from database: ', err);
       callback(err);
     } else {
-      console.log('Successfully retrieved transaction data');
+      console.log('Successfully retrieved review data');
       callback(null, results);
     }
   });
 };
 
-const postReviews = (reviewData, callback) => {
+const postReview = (reviewData, callback) => {
 
-  let params = [categoryData.id, categoryData.date, categoryData.category];
+  //reviewData necessary?
+
+  let params = [];
 
   let queryString = 'INSERT IGNORE INTO reviews VALUES (?, ?, ?)';
 
@@ -49,9 +53,12 @@ const getMetaData = callback => {
   });
 };
 
+//https://www.mysqltutorial.org/mysql-update-data.aspx
+//UPDATE, SET, WHERE
+
 const markHelpful = callback => {
 
-  let queryString = 'SELECT ........?';
+  let queryString = 'UPDATE reviews where ........?';
 
   db.query(queryString, (err, results) => {
     if (err) {
@@ -66,7 +73,9 @@ const markHelpful = callback => {
 
 const reportReview = callback => {
 
-  let queryString = 'SELECT ........?';
+  //Require ID of the review to update
+
+  let queryString = 'UPDATE reviews WHERE ........?';
 
   db.query(queryString, (err, results) => {
     if (err) {
@@ -81,7 +90,7 @@ const reportReview = callback => {
 
 module.exports = {
   getReviews,
-  postReviews,
+  postReview,
   getMetaData,
   markHelpful,
   reportReview

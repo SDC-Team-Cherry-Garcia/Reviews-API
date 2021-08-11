@@ -4,7 +4,6 @@ CREATE DATABASE AtelierReviews;
 
 USE AtelierReviews;
 
-DROP TABLE IF EXISTS reviews;
 CREATE TABLE reviews (
   id int NOT NULL AUTO_INCREMENT,
   product_id int NOT NULL,
