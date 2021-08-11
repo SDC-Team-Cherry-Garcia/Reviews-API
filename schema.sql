@@ -1,20 +1,21 @@
--- DROP DATABASE IF EXISTS AtelierReviews;
+DROP DATABASE IF EXISTS AtelierReviews;
 
--- CREATE DATABASE AtelierReviews;
+CREATE DATABASE AtelierReviews;
 
--- USE AtelierReviews;
+USE AtelierReviews;
 
+DROP TABLE IF EXISTS reviews;
 CREATE TABLE reviews (
   id int NOT NULL AUTO_INCREMENT,
   product_id int NOT NULL,
   rating int NOT NULL,
   date varchar(50),
-	summary varchar(140),
-  body varchar(280),
-	recommend TINYINT(0) NOT NULL,
-	reported TINYINT(0) NOT NULL,
-	reviewer_name varchar(30),
-  reviewer_email varchar(30),
+	summary varchar(280),
+  body varchar(500),
+	recommend varchar(5),
+	reported varchar(5),
+	reviewer_name varchar(50),
+  reviewer_email varchar(50),
   response varchar(140),
 	helpfulness int NOT NULL,
   PRIMARY KEY (id)

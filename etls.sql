@@ -1,5 +1,3 @@
-USE AtelierReviews;
-
 LOAD DATA
   INFILE './csv/characteristics.csv'
   INTO TABLE characteristics
@@ -10,7 +8,7 @@ LOAD DATA
   IGNORE 1 LINES;
 
 LOAD DATA
-  INFILE './csv/characteristics_reviews.csv'
+  INFILE './csv/characteristic_reviews.csv'
   INTO TABLE characteristics_reviews
   COLUMNS TERMINATED BY ','
   OPTIONALLY ENCLOSED BY '"'
