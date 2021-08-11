@@ -4,13 +4,8 @@ CREATE DATABASE AtelierReviews;
 
 USE AtelierReviews;
 
-CREATE TABLE products (
-  product_id int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (product_id)
-);
-
 CREATE TABLE reviews (
-  review_id int NOT NULL AUTO_INCREMENT,
+  id int NOT NULL AUTO_INCREMENT,
   product_id int NOT NULL,
   rating int NOT NULL,
   date date,
@@ -22,8 +17,7 @@ CREATE TABLE reviews (
   reviewer_email varchar(30),
   response varchar(140),
 	helpfulness int NOT NULL,
-  FOREIGN KEY (product_id) REFERENCES products(product_id),
-  PRIMARY KEY (review_id)
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE photos (
@@ -38,7 +32,6 @@ CREATE TABLE characteristics (
   id int NOT NULL AUTO_INCREMENT,
   product_id int NOT NULL,
   name varchar(30) NOT NULL,
-  FOREIGN KEY (product_id) REFERENCES reviews(product_id),
   PRIMARY KEY (id)
 );
 
@@ -49,4 +42,13 @@ CREATE TABLE characteristics_reviews (
   value int NOT NULL,
   FOREIGN KEY (review_id) REFERENCES reviews(review_id),
   PRIMARY KEY (id)
-)
+);
+
+LOAD DATA
+  INFILE './csv/characteristics.csv'
+  INTO TABLE characteristics
+  COLUMNS TERMINATED BY ','
+  OPTIONALLY ENCLOSED BY '"'
+  ESCAPED BY '"'
+  LINES TERMINATED BY '\n'
+  IGNORE 1 LINES;
