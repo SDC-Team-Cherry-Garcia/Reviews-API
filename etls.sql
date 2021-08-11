@@ -1,0 +1,37 @@
+USE AtelierReviews;
+
+LOAD DATA
+  INFILE './csv/characteristics.csv'
+  INTO TABLE characteristics
+  COLUMNS TERMINATED BY ','
+  OPTIONALLY ENCLOSED BY '"'
+  ESCAPED BY '"'
+  LINES TERMINATED BY '\n'
+  IGNORE 1 LINES;
+
+LOAD DATA
+  INFILE './csv/characteristics_reviews.csv'
+  INTO TABLE characteristics_reviews
+  COLUMNS TERMINATED BY ','
+  OPTIONALLY ENCLOSED BY '"'
+  ESCAPED BY '"'
+  LINES TERMINATED BY '\n'
+  IGNORE 1 LINES;
+
+LOAD DATA
+  INFILE './csv/reviews_photos.csv'
+  INTO TABLE photos
+  COLUMNS TERMINATED BY ','
+  OPTIONALLY ENCLOSED BY '"'
+  ESCAPED BY '"'
+  LINES TERMINATED BY '\n'
+  IGNORE 1 LINES;
+
+LOAD DATA
+  INFILE './csv/reviews.csv'
+  INTO TABLE reviews
+  COLUMNS TERMINATED BY ','
+  OPTIONALLY ENCLOSED BY '"'
+  ESCAPED BY '"'
+  LINES TERMINATED BY '\n'
+  IGNORE 1 LINES;
