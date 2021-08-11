@@ -4,7 +4,7 @@
   "description": "Systems Design Capstone",
   "main": "index.js",
   "scripts": {
-    "test": "",
+    "db": "node database/index.js",
     "start": "node index.js"
   },
   "repository": {
@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "jest": "^27.0.6",
     "mongoose": "^5.13.5",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.0"
   }
 }
