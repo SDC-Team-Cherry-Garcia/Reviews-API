@@ -6,8 +6,8 @@ const router = require('./server/routes');
 app.use(express.json());
 
 // Set up our routes
-app.use('/', router);
+app.use('/reviews', router);
 
-app.get('/', (req, res) => res.json({ message: 'Hello World' }));
+app.get('/reviews', (req, res) => res.json({ message: 'Hello World' }));
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));

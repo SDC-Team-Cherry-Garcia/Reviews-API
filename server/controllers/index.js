@@ -4,10 +4,11 @@ module.exports = {
 
 	getReviews: (req, res) => {
 
-		models.getReviews(reviewData => {
+		console.log(req.body);
 
-      res.json(reviewData).status(200);
-
+		models.getReviews((err, data) => {
+			console.log('DATA in controller: ', data);
+			res.json(data).status(200);
 		})
 	},
 
