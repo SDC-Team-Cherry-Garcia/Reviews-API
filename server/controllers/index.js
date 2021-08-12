@@ -4,10 +4,10 @@ module.exports = {
 
 	getReviews: (req, res) => {
 
-		console.log('QUERY: ', req.query);
-		console.log('PARAMS: ', req.params);
 
-			models.getReviews(req.query, (err, data) => {
+	  let productId = req.query.product_id;
+
+			models.getReviews(productId, (err, data) => {
 				//console.log('DATA in controller: ', data);
 				//let date = new Date(parseInt(data[0].date));
 
@@ -43,7 +43,9 @@ module.exports = {
 
   markHelpful: (req, res) => {
 
-		models.markHelpful(() => {
+		let reviewId = req.query.review_id;
+
+		models.markHelpful(reviewId, () => {
 
 			res.sendStatus(204);
 		})
@@ -51,7 +53,9 @@ module.exports = {
 
   reportReview: (req, res) => {
 
-		models.reportReview(() => {
+		let reviewId = req.query.review_id;
+
+		models.reportReview(reviewId, () => {
 
 			res.sendStatus(204);
 		})

@@ -11,10 +11,9 @@ const getReviews = (productId, callback) => {
 
   let params = [];
 
-  console.log('product id in model: ', productId.product_id);
-  let product = productId.product_id;
+  console.log('product id in model: ', productId);
 
-  let queryString = `SELECT * FROM reviews WHERE product_id=${product}`;
+  let queryString = `SELECT * FROM reviews WHERE product_id=${productId}`;
 
   db.query(queryString, params, (err, results) => {
     if (err) {
@@ -63,9 +62,9 @@ const getMetaData = callback => {
 //https://www.mysqltutorial.org/mysql-update-data.aspx
 //UPDATE, SET, WHERE
 
-const markHelpful = callback => {
+const markHelpful = (reviewId, callback) => {
 
-  let queryString = 'UPDATE reviews where ........?';
+  let queryString = `UPDATE reviews WHERE review_id=${reviewId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
@@ -78,11 +77,11 @@ const markHelpful = callback => {
   });
 };
 
-const reportReview = callback => {
+const reportReview = (reviewId, callback) => {
 
   //Require ID of the review to update
 
-  let queryString = 'UPDATE reviews WHERE ........?';
+  let queryString = `UPDATE reviews WHERE review_id=${reviewId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
