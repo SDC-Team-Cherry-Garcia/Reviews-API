@@ -11,7 +11,7 @@ const getReviews = callback => {
 
   let params = [];
 
-  let queryString = `SELECT * FROM AtelierReviews.reviews WHERE id=1`;
+  let queryString = `SELECT * FROM reviews WHERE id=1`;
 
   db.query(queryString, params, (err, results) => {
     if (err) {

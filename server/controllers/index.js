@@ -6,8 +6,21 @@ module.exports = {
 
 		console.log(req.body);
 
+
+
+
+//Create your custom format
+// var fdate = (date.getMonth() + 1)+'/'+ date.getDate()  +'/'+date.getFullYear()
+// alert(fdate);
+
+// // example representations
+// alert(date);
+// alert(date.toDateString());
+
 		models.getReviews((err, data) => {
 			console.log('DATA in controller: ', data);
+			let date = new Date(parseInt(data[0].date));
+
 			res.json(data).status(200);
 		})
 	},
@@ -24,7 +37,7 @@ module.exports = {
 	},
 	getMetaData: (req, res) => {
 
-		models.getMetaData(metaData => {
+		models.getMetaData((err, metaData) => {
 
 			res.json(metaData).status(200);
 
