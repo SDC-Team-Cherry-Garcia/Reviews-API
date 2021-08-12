@@ -4,25 +4,22 @@ module.exports = {
 
 	getReviews: (req, res) => {
 
-		console.log(req.body);
+		console.log('QUERY: ', req.query);
+		console.log('PARAMS: ', req.params);
 
+			models.getReviews(req.query, (err, data) => {
+				//console.log('DATA in controller: ', data);
+				//let date = new Date(parseInt(data[0].date));
 
+				if (data.length) {
 
+					//let date = new Date(parseInt(data[0].date));
+					res.json(data).status(200);
+				} else {
+					res.send('No product with that ID!');
+				}
 
-//Create your custom format
-// var fdate = (date.getMonth() + 1)+'/'+ date.getDate()  +'/'+date.getFullYear()
-// alert(fdate);
-
-// // example representations
-// alert(date);
-// alert(date.toDateString());
-
-		models.getReviews((err, data) => {
-			console.log('DATA in controller: ', data);
-			let date = new Date(parseInt(data[0].date));
-
-			res.json(data).status(200);
-		})
+			})
 	},
 
 	postReview: (req, res) => {

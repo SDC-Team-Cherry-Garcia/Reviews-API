@@ -5,13 +5,16 @@ const db = require('../../database');
 
 //you can use Date('string') in JS with the 13 char format and it returns it in a legible format. I'm doing the inverse to store new reviews Date.now().toString().
 
-const getReviews = callback => {
+const getReviews = (productId, callback) => {
 
   //query combines reviews table with photos table join on ????
 
   let params = [];
 
-  let queryString = `SELECT * FROM reviews WHERE id=1`;
+  console.log('product id in model: ', productId.product_id);
+  let product = productId.product_id;
+
+  let queryString = `SELECT * FROM reviews WHERE product_id=${product}`;
 
   db.query(queryString, params, (err, results) => {
     if (err) {
