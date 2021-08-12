@@ -1,5 +1,7 @@
 const db = require('../../database');
 
+//json_build_object()
+//json_agg()
 
 //you can use Date('string') in JS with the 13 char format and it returns it in a legible format. I'm doing the inverse to store new reviews Date.now().toString().
 
@@ -9,7 +11,7 @@ const getReviews = callback => {
 
   let params = [];
 
-  let queryString = 'SELECT * from reviews where product_id=1';
+  let queryString = `SELECT * FROM reviews WHERE id=1`;
 
   db.query(queryString, params, (err, results) => {
     if (err) {
@@ -17,6 +19,7 @@ const getReviews = callback => {
       callback(err);
     } else {
       console.log('Successfully retrieved review data');
+      console.log(results);
       callback(null, results);
     }
   });

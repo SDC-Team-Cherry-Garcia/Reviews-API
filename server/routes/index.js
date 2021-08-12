@@ -3,7 +3,7 @@ const controllers = require('../controllers');
 
 //Required param: product_id
 //Optional params: page(int), count(int), sort(string)
-router.get('/reviews/', controllers.getReviews);
+router.get('reviews/', controllers.getReviews);
 
 //** */
 router.post('reviews/', controllers.postReview);
