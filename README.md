@@ -1,8 +1,10 @@
 # Reviews-API
 
-To run database schema:
-# mysql -u "username" -p
-Enter password if you have one.
+Execute this file from the command line by typing:
+# mysql -u root < schema.sql
+to create the database and the tables.
+
+Or from MySQL shell after login:
 # source schema.sql;
 
 To start database in terminal:
