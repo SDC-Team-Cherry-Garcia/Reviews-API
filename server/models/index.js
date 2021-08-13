@@ -64,7 +64,7 @@ const getMetaData = callback => {
 
 const markHelpful = (reviewId, callback) => {
 
-  let queryString = `UPDATE reviews WHERE review_id=${reviewId}`;
+  let queryString = `UPDATE reviews SET helpfulness = helpfulness + 1 WHERE id = ${reviewId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
@@ -81,7 +81,7 @@ const reportReview = (reviewId, callback) => {
 
   //Require ID of the review to update
 
-  let queryString = `UPDATE reviews SET reported = 'true' WHERE id =${reviewId}`;
+  let queryString = `UPDATE reviews SET reported = 'true' WHERE id = ${reviewId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
