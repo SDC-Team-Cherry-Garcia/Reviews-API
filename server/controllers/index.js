@@ -42,6 +42,7 @@ const models = require('../models');
 //   ]
 // }
 
+//product id returns array of review objects where 'id' corresponds to 'review_id' of photos table
 
 const getReviews = (req, res) => {
 
@@ -100,7 +101,6 @@ const reportReview = (req, res) => {
 		res.sendStatus(204);
 	})
 };
-
 
 module.exports = {
 	getReviews,

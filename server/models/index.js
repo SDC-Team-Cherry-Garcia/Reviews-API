@@ -81,7 +81,7 @@ const reportReview = (reviewId, callback) => {
 
   //Require ID of the review to update
 
-  let queryString = `UPDATE reviews WHERE review_id=${reviewId}`;
+  let queryString = `UPDATE reviews SET reported = 'true' WHERE id =${reviewId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
