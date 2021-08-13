@@ -5,13 +5,15 @@ const db = require('../../database');
 
 //you can use Date('string') in JS with the 13 char format and it returns it in a legible format. I'm doing the inverse to store new reviews Date.now().toString().
 
-const getReviews = callback => {
+const getReviews = (productId, callback) => {
 
   //query combines reviews table with photos table join on ????
 
   let params = [];
 
-  let queryString = `SELECT * FROM AtelierReviews.reviews WHERE id=1`;
+  console.log('product id in model: ', productId);
+
+  let queryString = `SELECT * FROM reviews WHERE product_id=${productId}`;
 
   db.query(queryString, params, (err, results) => {
     if (err) {
@@ -60,9 +62,9 @@ const getMetaData = callback => {
 //https://www.mysqltutorial.org/mysql-update-data.aspx
 //UPDATE, SET, WHERE
 
-const markHelpful = callback => {
+const markHelpful = (reviewId, callback) => {
 
-  let queryString = 'UPDATE reviews where ........?';
+  let queryString = `UPDATE reviews WHERE review_id=${reviewId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
@@ -75,11 +77,11 @@ const markHelpful = callback => {
   });
 };
 
-const reportReview = callback => {
+const reportReview = (reviewId, callback) => {
 
   //Require ID of the review to update
 
-  let queryString = 'UPDATE reviews WHERE ........?';
+  let queryString = `UPDATE reviews WHERE review_id=${reviewId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {

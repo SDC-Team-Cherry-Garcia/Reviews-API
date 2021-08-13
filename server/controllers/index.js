@@ -4,12 +4,22 @@ module.exports = {
 
 	getReviews: (req, res) => {
 
-		console.log(req.body);
 
-		models.getReviews((err, data) => {
-			console.log('DATA in controller: ', data);
-			res.json(data).status(200);
-		})
+	  let productId = req.query.product_id;
+
+			models.getReviews(productId, (err, data) => {
+				//console.log('DATA in controller: ', data);
+				//let date = new Date(parseInt(data[0].date));
+
+				if (data.length) {
+
+					//let date = new Date(parseInt(data[0].date));
+					res.json(data).status(200);
+				} else {
+					res.send('No product with that ID!');
+				}
+
+			})
 	},
 
 	postReview: (req, res) => {
@@ -24,7 +34,7 @@ module.exports = {
 	},
 	getMetaData: (req, res) => {
 
-		models.getMetaData(metaData => {
+		models.getMetaData((err, metaData) => {
 
 			res.json(metaData).status(200);
 
@@ -33,7 +43,9 @@ module.exports = {
 
   markHelpful: (req, res) => {
 
-		models.markHelpful(() => {
+		let reviewId = req.query.review_id;
+
+		models.markHelpful(reviewId, () => {
 
 			res.sendStatus(204);
 		})
@@ -41,7 +53,9 @@ module.exports = {
 
   reportReview: (req, res) => {
 
-		models.reportReview(() => {
+		let reviewId = req.query.review_id;
+
+		models.reportReview(reviewId, () => {
 
 			res.sendStatus(204);
 		})
