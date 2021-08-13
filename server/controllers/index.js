@@ -84,7 +84,7 @@ const	getMetaData = (req, res) => {
 
 const markHelpful = (req, res) => {
 
-	let reviewId = req.query.review_id;
+	let reviewId = req.params.review_id;
 
 	models.markHelpful(reviewId, () => {
 
@@ -94,7 +94,7 @@ const markHelpful = (req, res) => {
 
 const reportReview = (req, res) => {
 
-	let reviewId = req.query.review_id;
+	let reviewId = req.params.review_id;
 
 	models.reportReview(reviewId, () => {
 
