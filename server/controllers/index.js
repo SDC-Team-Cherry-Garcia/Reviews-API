@@ -46,16 +46,63 @@ const models = require('../models');
 
 const getReviews = (req, res) => {
 
-	let productId = req.query.product_id;
+	const productId = req.query.product_id || 5;
+	//let reviewId = req.query.review_id || 5;
+	const page = req.query.page || 1;
+	const queryCount = req.query.count || 5;
+	const querySort = req.query.sort || 'helpful';
 
-		models.getReviews(productId, (err, data) => {
+	//count number of callbacks and increment until we hit count
+
+		models.getReviews(productId, async (err, data) => {
 			//console.log('DATA in controller: ', data);
 			//let date = new Date(parseInt(data[0].date));
 
+			let dataToSend = {
+				product: productId,
+        page: page,
+        count: queryCount,
+        results: []
+			}
+
+			// Checks if getReviews was successful.
 			if (data.length) {
 
+				console.log('LENGTH: ', data.length);
+
+				//console.log('DATA: ', data);
+
+				const photosArr = [];
+
+				const getPhotosInfo = async (review) => {
+					const reviewId = review.id
+					//console.log(reviewId);
+					//console.log('get Photos starting');
+
+
+
+						const photosResponse = models.getPhotos(reviewId, async (err, data) => {
+							if (err) {
+								throw("Bug in models.getPhotos");
+								console.log('Error retrieving photos in controller: ', err);
+							} else {
+								//console.log('photo data in controller: ', data);
+								photosArr.push(data);
+								if (photosArr.length === data.length) {
+									dataToSend.results = photosArr;
+									res.json(dataToSend).status(200);
+								}
+
+							}
+						})
+				}
+
+				data.map(async (review) => {
+					return getPhotosInfo(review)
+				})
+
+
 				//let date = new Date(parseInt(data[0].date));
-				res.json(data).status(200);
 			} else {
 				res.send('No product with that ID!');
 			}
