@@ -78,9 +78,6 @@ const getReviews = (req, res) => {
 					const reviewId = review.id
 					//console.log(reviewId);
 					//console.log('get Photos starting');
-
-
-
 						const photosResponse = models.getPhotos(reviewId, async (err, data) => {
 							if (err) {
 								throw("Bug in models.getPhotos");
