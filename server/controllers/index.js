@@ -6,9 +6,9 @@ const getReviews = (req, res) => {
   const productId = req.query.product_id || 5;
   const page = req.query.page || 1;
   const queryCount = req.query.count || 5;
-  const querySort = req.query.sort || 'helpful';
+  const sortMethod = req.query.sort || 'newest';
 
-  models.getReviews(productId, (err, reviewData) => {
+  models.getReviews(productId, sortMethod, (err, reviewData) => {
     let dataToSend = {
       product: productId,
       page: page,
