@@ -44,7 +44,7 @@ const getPhotos = (reviewId, callback) => {
       callback(err);
     } else {
       console.log('Successfully retrieved photo data');
-      //console.log('Photos: ', results);
+      console.log('Photos: ', results);
       callback(null, results);
     }
   });

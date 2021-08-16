@@ -54,8 +54,8 @@ const getReviews = (req, res) => {
 
 	//count number of callbacks and increment until we hit count
 
-		models.getReviews(productId, async (err, data) => {
-			//console.log('DATA in controller: ', data);
+		models.getReviews(productId, async (err, reviewData) => {
+			console.log('DATA in controller: ', reviewData);
 			//let date = new Date(parseInt(data[0].date));
 
 			let dataToSend = {
@@ -64,40 +64,73 @@ const getReviews = (req, res) => {
         count: queryCount,
         results: [
 					// {
-					// 	review_id: 5,
-					// 	rating: 3,
-					// 	summary: "I'm enjoying wearing these shades",
-					// 	recommend: false,
-					// 	response: null,
-					// 	body: "Comfortable and practical.",
-					// 	date: "2019-04-14T00:00:00.000Z",
-					// 	reviewer_name: "shortandsweeet",
-					// 	helpfulness: 5,
+					// 	review_id: null,
+					// 	rating: data.rating,
+					// 	summary: data.summary,
+					// 	recommend: data.recommend,
+					// 	response: data.response,
+					// 	body: data.body,
+					// 	date: new Date(parseInt(data.date)),
+					// 	reviewer_name: data.reviewer_name,
+					// 	helpfulness: data.helpfulness,
 					// 	photos: []
 					// }
 				]
 			}
 
-			// Checks if getReviews was successful.
-			if (data.length) {
+			// reviewData.forEach(review => {
+			// 	dataToSend.results.push(
+      //     {
+			// 			review_id: review.id,
+			// 			rating: review.rating,
+			// 			summary: review.summary,
+			// 			recommend: review.recommend,
+			// 			response: review.response,
+			// 			body: review.body,
+			// 			date: new Date(parseInt(review.date)),
+			// 			reviewer_name: review.reviewer_name,
+			// 			helpfulness: review.helpfulness,
+			// 			photos: []
+			// 		})
+			// })
 
-				//console.log('LENGTH: ', data.length);
+			// Checks if getReviews was successful
+			if (reviewData.length) {
 
-				//console.log('DATA: ', data);
+				const len = reviewData.length;
 
 				const photosArr = [];
 
 				const getPhotosInfo = async (review) => {
-					const reviewId = review.id
-					//console.log(reviewId);
-					//console.log('get Photos starting');
+					const reviewId = review.id;
+
 						const photosResponse = models.getPhotos(reviewId, async (err, data) => {
 							if (err) {
 								console.log('Error retrieving photos in controller: ', err);
 							} else {
-								//console.log('photo data in controller: ', data);
+
 								photosArr.push(data);
-								if (photosArr.length === data.length) {
+
+								if (photosArr.length === len) {
+									// data.forEach(review => {
+									// 	dataToSend.results =
+									// 		{
+									// 			review_id: review.id,
+									// 			rating: review.rating,
+									// 			summary: review.summary,
+									// 			recommend: review.recommend,
+									// 			response: review.response,
+									// 			body: review.body,
+									// 			date: new Date(parseInt(review.date)),
+									// 			reviewer_name: review.reviewer_name,
+									// 			helpfulness: review.helpfulness,
+									// 			photos: []
+									// 		}
+									// })
+									// photosArr.forEach(photoObj => {
+									// 	console.log('EQUAL??', photoObj.review_id === reviewId);
+									// })
+
 									dataToSend.results = photosArr;
 									res.json(dataToSend).status(200);
 								}
@@ -105,13 +138,10 @@ const getReviews = (req, res) => {
 							}
 						})
 				}
+				reviewData.map(async (review) => {
+					return getPhotosInfo(review);
+				});
 
-				data.map(async (review) => {
-					return getPhotosInfo(review)
-				})
-
-
-				//let date = new Date(parseInt(data[0].date));
 			} else {
 				res.send('No product with that ID!');
 			}
