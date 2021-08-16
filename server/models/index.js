@@ -10,13 +10,13 @@ const getReviews = (productId, callback) => {
       callback(err);
     } else {
       //remove reported reviews
+      const notReported = [];
       results.forEach(result => {
         if (result.reported === 'false') {
-          const index = results.indexOf(result);
-          results = results.splice(index, 1, result);
-          callback(null, results);
+          notReported.push(result);
         }
       })
+      callback(null, notReported);
     }
   });
 };
