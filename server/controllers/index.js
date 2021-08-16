@@ -104,12 +104,24 @@ const getReviews = (req, res) => {
 				const getPhotosInfo = async (review) => {
 					const reviewId = review.id;
 
-						const photosResponse = models.getPhotos(reviewId, async (err, data) => {
+						const photosResponse = models.getPhotos(reviewId, async (err, photoData) => {
 							if (err) {
 								console.log('Error retrieving photos in controller: ', err);
 							} else {
 
-								photosArr.push(data);
+								photosArr.push(
+									{
+										review_id: reviewId,
+										rating: review.rating,
+										summary: review.summary,
+										recommend: review.recommend,
+										response: review.response,
+										body: review.body,
+										date: new Date(parseInt(review.date)),
+										reviewer_name: review.reviewer_name,
+										helpfulness: review.helpfulness,
+										photos: photoData
+									});
 
 								if (photosArr.length === len) {
 									// data.forEach(review => {
