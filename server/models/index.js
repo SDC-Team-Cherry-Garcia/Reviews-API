@@ -36,7 +36,7 @@ const getPhotos = (reviewId, callback) => {
 
   //console.log('review id in getPhotos model: ', reviewId);
 
-  let queryString = `SELECT * FROM photos WHERE review_id=${reviewId}`;
+  let queryString = `SELECT id, url FROM photos WHERE review_id=${reviewId}`;
 
   db.query(queryString, params, (err, results) => {
     if (err) {
@@ -44,7 +44,7 @@ const getPhotos = (reviewId, callback) => {
       callback(err);
     } else {
       console.log('Successfully retrieved photo data');
-      //console.log(results);
+      //console.log('Photos: ', results);
       callback(null, results);
     }
   });
