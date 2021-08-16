@@ -36,6 +36,7 @@ const getPhotos = (reviewId, callback) => {
 
   //console.log('review id in getPhotos model: ', reviewId);
 
+  //SELECT id, url
   let queryString = `SELECT id, url FROM photos WHERE review_id=${reviewId}`;
 
   db.query(queryString, params, (err, results) => {
