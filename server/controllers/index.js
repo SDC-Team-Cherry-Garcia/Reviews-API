@@ -44,18 +44,18 @@ const getReviews = (req, res) => {
               res.json(dataToSend).status(200);
             }
           }
-        });
-      });
+        })
+      })
     } else {
       res.send('No product with that ID!');
     }
-  });
+  })
 };
 
 const postReview = (req, res) => {
   let review = req.body;
 
-  models.postReviews(review, () => {
+  models.postReview(review, () => {
     res.sendStatus(201);
   });
 };

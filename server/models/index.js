@@ -38,9 +38,15 @@ const getPhotos = (reviewId, callback) => {
 
 const postReview = (reviewData, callback) => {
 
+  console.log(reviewData);
+
   let params = [];
 
-  let queryString = 'INSERT IGNORE INTO reviews VALUES (?, ?, ?)';
+  reviewData.results.forEach(result => {
+    params = [reviewData.product, result.review_id, result.rating, result.summary, result.recommend, "null", result.response, result.body, Date.now().toString(), result.reviewer_name, result.reviewer_email, result.helpfulness];
+  })
+
+  let queryString = 'INSERT IGNORE INTO reviews(product_id, id, rating, summary, recommend, reported, response, body, date, reviewer_name, reviewer_email, helpfulness) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
   db.query(queryString, params, (err, results) => {
     if (err) {
