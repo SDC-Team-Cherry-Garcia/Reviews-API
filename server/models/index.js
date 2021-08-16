@@ -7,11 +7,12 @@ const db = require('../../database');
 
 const getReviews = (productId, callback) => {
 
-  //query combines reviews table with photos table join on ????
+  //query combines reviews table with photos table join on review_id, id
+  //DO NOT RETURN if reported = true
 
   let params = [];
 
-  console.log('product id in model: ', productId);
+  //console.log('product id in model: ', productId);
 
   let queryString = `SELECT * FROM reviews WHERE product_id=${productId}`;
 
@@ -26,6 +27,29 @@ const getReviews = (productId, callback) => {
     }
   });
 };
+
+//no path for this, just a helper function for /reviews endpoint
+//try to promisify this function
+const getPhotos = (reviewId, callback) => {
+
+  let params = [];
+
+  //console.log('review id in getPhotos model: ', reviewId);
+
+  let queryString = `SELECT * FROM photos WHERE review_id=${reviewId}`;
+
+  db.query(queryString, params, (err, results) => {
+    if (err) {
+      console.log('Error getting photos from database: ', err);
+      callback(err);
+    } else {
+      console.log('Successfully retrieved photo data');
+      //console.log(results);
+      callback(null, results);
+    }
+  });
+
+}
 
 const postReview = (reviewData, callback) => {
 
@@ -59,12 +83,9 @@ const getMetaData = callback => {
   });
 };
 
-//https://www.mysqltutorial.org/mysql-update-data.aspx
-//UPDATE, SET, WHERE
-
 const markHelpful = (reviewId, callback) => {
 
-  let queryString = `UPDATE reviews WHERE review_id=${reviewId}`;
+  let queryString = `UPDATE reviews SET helpfulness = helpfulness + 1 WHERE id = ${reviewId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
@@ -79,9 +100,7 @@ const markHelpful = (reviewId, callback) => {
 
 const reportReview = (reviewId, callback) => {
 
-  //Require ID of the review to update
-
-  let queryString = `UPDATE reviews WHERE review_id=${reviewId}`;
+  let queryString = `UPDATE reviews SET reported = 'true' WHERE id = ${reviewId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
@@ -96,6 +115,7 @@ const reportReview = (reviewId, callback) => {
 
 module.exports = {
   getReviews,
+  getPhotos,
   postReview,
   getMetaData,
   markHelpful,
