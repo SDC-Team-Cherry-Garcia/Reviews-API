@@ -60,88 +60,57 @@ const postReview = (req, res) => {
   });
 };
 
-// {
-//   "product_id": "2",
-//   "ratings": {
-//     2: 1,
-//     3: 1,
-//     4: 2,
-//     // ...
-//   },
-//   "recommended": {
-//     0: 5
-//     // ...
-//   },
-//   "characteristics": {
-//     "Size": {
-//       "id": 14,
-//       "value": "4.0000"
-//     },
-//     "Width": {
-//       "id": 15,
-//       "value": "3.5000"
-//     },
-//     "Comfort": {
-//       "id": 16,
-//       "value": "4.0000"
-//     },
-//     // ...
-// }
-
 const getMetaData = (req, res) => {
 	const productId = req.query.product_id;
 
 	let dataToSend = {
 		product_id: productId,
-		ratings: {
-
-		},
-		recommend: {
-
-		},
-		characteristics: {
-
-		}
+		ratings: {},
+		recommend: {},
+		characteristics: {}
 	}
 
-	// getMetaDataCharacteristics
-  // getMetaDataValues
-  // getRating
+	models.getRatingAndRecs(productId, (err, ratingData) => {
+		let newData = {};
+		let recData = {};
+		ratingData.forEach((rating) => {
+
+			let ratingKey = rating.rating;
+			if (!newData[ratingKey]) {
+				newData[ratingKey] = 1;
+			} else {
+				newData[ratingKey]++;
+			}
+
+			let recKey = rating.recommend;
+			if (!recData[recKey]) {
+				recData[recKey] = 1;
+			} else {
+				recData[recKey]++;
+			}
+		})
+		dataToSend.ratings = newData;
+		dataToSend.recommend = recData;
+	})
 
   models.getMetaDataCharacteristics(productId, (err, metaData) => {
-		console.log(metaData);
 
-		let dataContainer = [];
+		metaData.forEach(characteristic => {
+			let name = characteristic.name;
+			dataToSend.characteristics[name] = {id: characteristic.id, value: "0.0000"};
 
-		metaData.forEach(char => {
-			dataContainer.push(char);
+		  models.getMetaDataValues(productId, characteristic.id, (err, valueData) => {
+
+				if (err) {
+					console.log('Error retrieving value data in controller');
+				} else {
+
+					valueData.forEach(value => {
+						dataToSend.characteristics[name].value = value.value;
+					})
+				}
+			})
 		})
-
-		//try object.assign
-
-    let obj = dataContainer.reduce((acc, cur, i) => {
-			// let name = cur.name || 'Fit';
-			// let newObj;
-			// if (name !== undefined) {
-			// 	newObj[name] = {
-			// 		id: cur.id
-			// 	}
-			// }
-			acc[i] = cur;
-			console.log('CUR', cur.name);
-			return acc;
-		}, {});
-
-		dataToSend.characteristics = obj;
-
-		for (let key in dataToSend.characteristics) {
-			console.log('key1', key);
-			let newKey = dataToSend.characteristics[key].name;
-			key = newKey;
-			console.log('key2', key);
-		}
-		console.log('TEST', dataToSend.characteristics)
-
     res.json(dataToSend).status(200);
   });
 };

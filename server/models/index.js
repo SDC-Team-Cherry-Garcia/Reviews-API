@@ -70,42 +70,12 @@ const postReview = (reviewData, callback) => {
   });
 };
 
-// {
-//   "product_id": "2",
-//   "ratings": {
-//     2: 1,
-//     3: 1,
-//     4: 2,
-//     // ...
-//   },
-//   "recommended": {
-//     0: 5
-//     // ...
-//   },
-//   "characteristics": {
-//     "Size": {
-//       "id": 14,
-//       "value": "4.0000"
-//     },
-//     "Width": {
-//       "id": 15,
-//       "value": "3.5000"
-//     },
-//     "Comfort": {
-//       "id": 16,
-//       "value": "4.0000"
-//     },
-//     // ...
-// }
-
 const getMetaDataCharacteristics = (productId, callback) => {
 
   //from prod id chars: id,product_id,name
   //from review id char_reviews: id,characteristic_id,review_id,value
 
-  let queryString = `SELECT name, id FROM characteristics WHERE product_id=${productId}
-
-  `;
+  let queryString = `SELECT name, id FROM characteristics WHERE product_id=${productId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
@@ -118,28 +88,28 @@ const getMetaDataCharacteristics = (productId, callback) => {
   });
 };
 
-const getMetaDataValues = (productId, callback) => {
+const getMetaDataValues = (productId, charId, callback) => {
 
   //from prod id chars: id,product_id,name
   //from review id char_reviews: id,characteristic_id,review_id,value
 
-  let queryString = `SELECT name FROM characteristics WHERE product_id=${productId}`;
+  let queryString = `SELECT value, characteristic_id FROM characteristics_reviews WHERE characteristic_id=${charId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
-      console.log('Error retrieving metadata from database: ', err);
+      console.log('Error retrieving metadata values from database: ', err);
       callback(err);
     } else {
-      console.log('Successfully retrieved metadata');
+      console.log('Successfully retrieved metadata values');
       callback(null, results);
     }
   });
 };
 
 //no path for this, just a helper function for /reviews/meta endpoint
-const getRating = (productId, callback) => {
+const getRatingAndRecs = (productId, callback) => {
 
-  let queryString = `SELECT rating FROM reviews WHERE product_id=${productId}`;
+  let queryString = `SELECT rating, recommend FROM reviews WHERE product_id=${productId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
@@ -189,7 +159,7 @@ module.exports = {
   postReview,
   getMetaDataCharacteristics,
   getMetaDataValues,
-  getRating,
+  getRatingAndRecs,
   markHelpful,
   reportReview
 };
