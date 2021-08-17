@@ -6,7 +6,7 @@ const router = require('./server/routes');
 app.use(express.json());
 
 // Set up our routes
-app.use('', router);
+app.use('/reviews', router);
 
 app.get('/reviews', (req, res) => res.json({ message: 'Hello World' }));
 
