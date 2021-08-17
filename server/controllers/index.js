@@ -60,9 +60,89 @@ const postReview = (req, res) => {
   });
 };
 
+// {
+//   "product_id": "2",
+//   "ratings": {
+//     2: 1,
+//     3: 1,
+//     4: 2,
+//     // ...
+//   },
+//   "recommended": {
+//     0: 5
+//     // ...
+//   },
+//   "characteristics": {
+//     "Size": {
+//       "id": 14,
+//       "value": "4.0000"
+//     },
+//     "Width": {
+//       "id": 15,
+//       "value": "3.5000"
+//     },
+//     "Comfort": {
+//       "id": 16,
+//       "value": "4.0000"
+//     },
+//     // ...
+// }
+
 const getMetaData = (req, res) => {
-  models.getMetaData((err, metaData) => {
-    res.json(metaData).status(200);
+	const productId = req.query.product_id;
+
+	let dataToSend = {
+		product_id: productId,
+		ratings: {
+
+		},
+		recommend: {
+
+		},
+		characteristics: {
+
+		}
+	}
+
+	// getMetaDataCharacteristics
+  // getMetaDataValues
+  // getRating
+
+  models.getMetaDataCharacteristics(productId, (err, metaData) => {
+		console.log(metaData);
+
+		let dataContainer = [];
+
+		metaData.forEach(char => {
+			dataContainer.push(char);
+		})
+
+		//try object.assign
+
+    let obj = dataContainer.reduce((acc, cur, i) => {
+			// let name = cur.name || 'Fit';
+			// let newObj;
+			// if (name !== undefined) {
+			// 	newObj[name] = {
+			// 		id: cur.id
+			// 	}
+			// }
+			acc[i] = cur;
+			console.log('CUR', cur.name);
+			return acc;
+		}, {});
+
+		dataToSend.characteristics = obj;
+
+		for (let key in dataToSend.characteristics) {
+			console.log('key1', key);
+			let newKey = dataToSend.characteristics[key].name;
+			key = newKey;
+			console.log('key2', key);
+		}
+		console.log('TEST', dataToSend.characteristics)
+
+    res.json(dataToSend).status(200);
   });
 };
 

@@ -38,6 +38,8 @@ CREATE TABLE characteristics (
   PRIMARY KEY (id)
 );
 
+ALTER TABLE characteristics ADD INDEX product_id (product_id);
+
 CREATE TABLE characteristics_reviews (
   id int NOT NULL AUTO_INCREMENT,
   characteristic_id int NOT NULL,
@@ -45,3 +47,5 @@ CREATE TABLE characteristics_reviews (
   value int NOT NULL,
   PRIMARY KEY (id)
 );
+
+ALTER TABLE characteristics_reviews ADD INDEX review_id (review_id);
