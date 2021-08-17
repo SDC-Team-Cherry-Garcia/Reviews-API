@@ -1,7 +1,6 @@
 const models = require('../models');
 
 //product id returns array of review objects where 'id' corresponds to 'review_id' of photos table
-
 const getReviews = (req, res) => {
   const productId = req.query.product_id;
   const page = req.query.page || 1;
@@ -73,8 +72,8 @@ const getMetaData = (req, res) => {
 	models.getRatingAndRecs(productId, (err, ratingData) => {
 		let newData = {};
 		let recData = {};
-		ratingData.forEach((rating) => {
 
+		ratingData.forEach(rating => {
 			let ratingKey = rating.rating;
 			if (!newData[ratingKey]) {
 				newData[ratingKey] = 1;
@@ -100,17 +99,23 @@ const getMetaData = (req, res) => {
 			dataToSend.characteristics[name] = {id: characteristic.id, value: "0.0000"};
 
 		  models.getMetaDataValues(productId, characteristic.id, (err, valueData) => {
+				console.log('Value Data: ', valueData);
 
 				if (err) {
 					console.log('Error retrieving value data in controller');
-				} else {
-
-					valueData.forEach(value => {
-						dataToSend.characteristics[name].value = value.value;
-					})
 				}
+
+				//**THIS PART ISN'T WORKING */
+
+				// else {
+
+				// 	valueData.forEach(value => {
+				// 		dataToSend.characteristics[name].value = value.value;
+				// 	})
+				// }
 			})
 		})
+
     res.json(dataToSend).status(200);
   });
 };
