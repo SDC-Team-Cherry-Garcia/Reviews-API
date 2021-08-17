@@ -1,61 +1,63 @@
 const db = require('../../database');
 
-//json_build_object()
-//json_agg()
+const getReviews = (productId, sortMethod, queryCount, callback) => {
 
-//you can use Date('string') in JS with the 13 char format and it returns it in a legible format. I'm doing the inverse to store new reviews Date.now().toString().
+  console.log(sortMethod);
+  console.log(queryCount);
 
-const getReviews = (productId, callback) => {
+  let queryString = ``;
 
-  //query combines reviews table with photos table join on review_id, id
-  //DO NOT RETURN if reported = true
+  if (sortMethod === 'helpful') {
+    queryString = `SELECT * FROM reviews WHERE product_id=${productId} ORDER BY helpfulness DESC LIMIT ${queryCount}`;
+  } else if (sortMethod === 'newest') {
+    queryString = `SELECT * FROM reviews WHERE product_id=${productId} ORDER BY date DESC LIMIT ${queryCount}`;
+  } else if (sortMethod === 'relevant') {
+    queryString = `SELECT * FROM reviews WHERE product_id=${productId} ORDER BY rating DESC, helpfulness DESC, date DESC LIMIT ${queryCount}`;
+  }
 
-  let params = [];
-
-  //console.log('product id in model: ', productId);
-
-  let queryString = `SELECT * FROM reviews WHERE product_id=${productId}`;
-
-  db.query(queryString, params, (err, results) => {
+  db.query(queryString, (err, results) => {
     if (err) {
       console.log('Error getting all reviews from database: ', err);
       callback(err);
     } else {
-      console.log('Successfully retrieved review data');
-      console.log(results);
-      callback(null, results);
+      //remove reported reviews
+      const notReported = [];
+      results.forEach(result => {
+        if (result.reported === 'false') {
+          notReported.push(result);
+        }
+      })
+      callback(null, notReported);
     }
   });
 };
 
 //no path for this, just a helper function for /reviews endpoint
-//try to promisify this function
 const getPhotos = (reviewId, callback) => {
 
-  let params = [];
+  let queryString = `SELECT id, url FROM photos WHERE review_id=${reviewId}`;
 
-  //console.log('review id in getPhotos model: ', reviewId);
-
-  let queryString = `SELECT * FROM photos WHERE review_id=${reviewId}`;
-
-  db.query(queryString, params, (err, results) => {
+  db.query(queryString, (err, results) => {
     if (err) {
       console.log('Error getting photos from database: ', err);
       callback(err);
     } else {
-      console.log('Successfully retrieved photo data');
-      //console.log(results);
       callback(null, results);
     }
   });
-
 }
 
 const postReview = (reviewData, callback) => {
 
+  console.log(reviewData);
+
   let params = [];
 
-  let queryString = 'INSERT IGNORE INTO reviews VALUES (?, ?, ?)';
+  reviewData.results.forEach(result => {
+    params = [reviewData.product, result.review_id, result.rating, result.summary, result.recommend, "null", result.response, result.body, Date.now().toString(), result.reviewer_name, result.reviewer_email, result.helpfulness];
+  })
+
+  let queryString = 'INSERT IGNORE INTO reviews(product_id, id, rating, summary, recommend, reported, response, body, date, reviewer_name, reviewer_email, helpfulness) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
   db.query(queryString, params, (err, results) => {
     if (err) {
