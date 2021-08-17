@@ -3,12 +3,12 @@ const models = require('../models');
 //product id returns array of review objects where 'id' corresponds to 'review_id' of photos table
 
 const getReviews = (req, res) => {
-  const productId = req.query.product_id || 5;
+  const productId = req.query.product_id;
   const page = req.query.page || 1;
   const queryCount = req.query.count || 5;
   const sortMethod = req.query.sort || 'newest';
 
-  models.getReviews(productId, sortMethod, (err, reviewData) => {
+  models.getReviews(productId, sortMethod, queryCount, (err, reviewData) => {
     let dataToSend = {
       product: productId,
       page: page,
@@ -38,7 +38,7 @@ const getReviews = (req, res) => {
               photos: photoData,
             });
 
-            //tells us when callback is finished and we can send data back
+            //**tells us when callback is finished and we can send data back
             if (reviewsArr.length === reviewData.length) {
               dataToSend.results = reviewsArr;
               res.json(dataToSend).status(200);

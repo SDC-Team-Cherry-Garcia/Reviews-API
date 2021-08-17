@@ -1,17 +1,18 @@
 const db = require('../../database');
 
-const getReviews = (productId, sortMethod, callback) => {
+const getReviews = (productId, sortMethod, queryCount, callback) => {
 
   console.log(sortMethod);
+  console.log(queryCount);
 
   let queryString = ``;
 
   if (sortMethod === 'helpful') {
-    queryString = `SELECT * FROM reviews WHERE product_id=${productId} ORDER BY helpfulness DESC`;
+    queryString = `SELECT * FROM reviews WHERE product_id=${productId} ORDER BY helpfulness DESC LIMIT ${queryCount}`;
   } else if (sortMethod === 'newest') {
-    queryString = `SELECT * FROM reviews WHERE product_id=${productId} ORDER BY date DESC`;
+    queryString = `SELECT * FROM reviews WHERE product_id=${productId} ORDER BY date DESC LIMIT ${queryCount}`;
   } else if (sortMethod === 'relevant') {
-    queryString = `SELECT * FROM reviews WHERE product_id=${productId} ORDER BY rating DESC, helpfulness DESC, date DESC`;
+    queryString = `SELECT * FROM reviews WHERE product_id=${productId} ORDER BY rating DESC, helpfulness DESC, date DESC LIMIT ${queryCount}`;
   }
 
   db.query(queryString, (err, results) => {

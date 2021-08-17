@@ -20,12 +20,16 @@ CREATE TABLE reviews (
   PRIMARY KEY (id)
 );
 
+ALTER TABLE reviews ADD INDEX product_id (product_id);
+
 CREATE TABLE photos (
   id int NOT NULL AUTO_INCREMENT,
   review_id int NOT NULL,
   url varchar(280),
   PRIMARY KEY (id)
 );
+
+ALTER TABLE photos ADD INDEX review_id (review_id);
 
 CREATE TABLE characteristics (
   id int NOT NULL AUTO_INCREMENT,
