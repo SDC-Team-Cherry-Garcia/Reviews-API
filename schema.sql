@@ -48,4 +48,4 @@ CREATE TABLE characteristics_reviews (
   PRIMARY KEY (id)
 );
 
-ALTER TABLE characteristics_reviews ADD INDEX review_id (review_id);
+ALTER TABLE characteristics_reviews ADD INDEX characteristic_id (characteristic_id);

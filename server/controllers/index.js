@@ -52,7 +52,7 @@ const getReviews = (req, res) => {
 };
 
 const postReview = (req, res) => {
-  let review = req.body;
+  const review = req.body;
 
   models.postReview(review, () => {
     res.sendStatus(201);
@@ -94,34 +94,46 @@ const getMetaData = (req, res) => {
 
   models.getMetaDataCharacteristics(productId, (err, metaData) => {
 
+		let container = [];
+
 		metaData.forEach(characteristic => {
-			let name = characteristic.name;
-			dataToSend.characteristics[name] = {id: characteristic.id, value: "0.0000"};
+			const name = characteristic.name;
+			dataToSend.characteristics[name] = {id: characteristic.id, value: '0.0000'};
 
 		  models.getMetaDataValues(productId, characteristic.id, (err, valueData) => {
-				console.log('Value Data: ', valueData);
+
+				//necessary to make sure callbacks have completed running -- all valueData will be held here
+				container.push(valueData);
 
 				if (err) {
 					console.log('Error retrieving value data in controller');
 				}
 
 				//**THIS PART ISN'T WORKING */
+				//only the last characteristic's value is being set properly
+				else {
 
-				// else {
+					if (metaData.length <= container.length) {
 
-				// 	valueData.forEach(value => {
-				// 		dataToSend.characteristics[name].value = value.value;
-				// 	})
-				// }
+					  container.forEach(value => {
+
+              console.log('value from container: ', value);
+
+							dataToSend.characteristics[name].value = `${value[0].value.toString()}.0000`;
+
+						})
+						res.json(dataToSend).status(200);
+				  }
+				}
+
 			})
 		})
-
-    res.json(dataToSend).status(200);
+		//res.json(dataToSend).status(200);
   });
 };
 
 const markHelpful = (req, res) => {
-  let reviewId = req.params.review_id;
+  const reviewId = req.params.review_id;
 
   models.markHelpful(reviewId, () => {
     res.sendStatus(204);
@@ -129,7 +141,7 @@ const markHelpful = (req, res) => {
 };
 
 const reportReview = (req, res) => {
-  let reviewId = req.params.review_id;
+  const reviewId = req.params.review_id;
 
   models.reportReview(reviewId, () => {
     res.sendStatus(204);
