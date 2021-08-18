@@ -70,9 +70,12 @@ const postReview = (reviewData, callback) => {
   });
 };
 
-const getMetaData = callback => {
+const getMetaDataCharacteristics = (productId, callback) => {
 
-  let queryString = 'SELECT ........?';
+  //from prod id chars: id,product_id,name
+  //from review id char_reviews: id,characteristic_id,review_id,value
+
+  let queryString = `SELECT name, id FROM characteristics WHERE product_id=${productId}`;
 
   db.query(queryString, (err, results) => {
     if (err) {
@@ -84,6 +87,41 @@ const getMetaData = callback => {
     }
   });
 };
+
+const getMetaDataValues = (productId, charId, callback) => {
+
+  //from prod id chars: id,product_id,name
+  //from review id char_reviews: id,characteristic_id,review_id,value
+
+  let queryString = `SELECT value, characteristic_id FROM characteristics_reviews WHERE characteristic_id=${charId}`;
+
+  db.query(queryString, (err, results) => {
+    if (err) {
+      console.log('Error retrieving metadata values from database: ', err);
+      callback(err);
+    } else {
+      console.log('Successfully retrieved metadata values');
+      callback(null, results);
+    }
+  });
+};
+
+//no path for this, just a helper function for /reviews/meta endpoint
+const getRatingAndRecs = (productId, callback) => {
+
+  let queryString = `SELECT rating, recommend FROM reviews WHERE product_id=${productId}`;
+
+  db.query(queryString, (err, results) => {
+    if (err) {
+      console.log('Error retrieving rating from database: ', err);
+      callback(err);
+    } else {
+      console.log('Successfully retrieved rating');
+      callback(null, results);
+    }
+  });
+}
+
 
 const markHelpful = (reviewId, callback) => {
 
@@ -119,7 +157,9 @@ module.exports = {
   getReviews,
   getPhotos,
   postReview,
-  getMetaData,
+  getMetaDataCharacteristics,
+  getMetaDataValues,
+  getRatingAndRecs,
   markHelpful,
   reportReview
 };
